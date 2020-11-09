@@ -11,7 +11,7 @@
     "accountId": "YOUR_ACCOUNT_ID"
   },
   "scripts": {
-    "start": "node app.local.js",
+    "start": "node ./src/app.local.js",
     "config": "node ./scripts/configure.js",
     "deconfig": "node ./scripts/deconfigure.js",
     "local": "node scripts/local",
@@ -49,6 +49,7 @@
     "sequelize-auto": "^0.6.7"
   },
   "devDependencies": {
+    "babel-register": "^6.26.0",
     "sequelize-cli": "^6.2.0"
   }
 }
