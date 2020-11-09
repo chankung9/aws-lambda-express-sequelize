@@ -1,11 +1,11 @@
 const lambdaFunction = require('../lambda.js')
-const apiGatewayEvent = require('../api-gateway-event.json')
+const apiGatewayEvent = require('../events/api-gateway-event.json')
 
 const server = lambdaFunction.handler(apiGatewayEvent, {
   succeed: v => {
     const body = v.body
     const buff = Buffer.from(body, 'base64')
-    v.body = buff.toString('utf-8')
+    v.body = buff.toString('utf8')
     console.log(v)
     process.exit(0)
   }

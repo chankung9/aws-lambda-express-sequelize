@@ -9,10 +9,6 @@ const bodyParser = require('body-parser')
 const compression = require('compression')
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 
-// view engine setup
-app.set('view engine', 'pug')
-app.set('views', path.join(__dirname, '../views'))
-
 if (process.env.NODE_ENV === 'test') {
   app.use('/sam', compression())
 } else {
