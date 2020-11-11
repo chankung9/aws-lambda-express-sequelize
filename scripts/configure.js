@@ -17,11 +17,13 @@ const args = require('minimist')(process.argv.slice(2), {
     'account-id',
     'bucket-name',
     'function-name',
-    'region'
+    'region',
+    'stage-name'
   ],
   default: {
     region: 'us-east-1',
-    'function-name': 'AwsServerlessExpressFunction'
+    'function-name': 'AwsServerlessExpressFunction',
+    'stage-name': 'dev'
   }
 })
 
@@ -33,6 +35,7 @@ const accountId = args['account-id']
 const bucketName = args['bucket-name']
 const functionName = args['function-name']
 const region = args.region
+const stageName = args['stage-name']
 
 if (!accountId || accountId.length !== 12) {
   console.error('You must supply a 12 digit account id as --account-id="<accountId>"')
@@ -56,4 +59,7 @@ modifyFiles(['./simple-proxy-api.yaml', './package.json', './cloudformation.yaml
 }, {
   regexp: /YOUR_SERVERLESS_EXPRESS_LAMBDA_FUNCTION_NAME/g,
   replacement: functionName
+}, {
+  regexp: /YOUR_STAGE/g,
+  replacement: stageName
 }])
