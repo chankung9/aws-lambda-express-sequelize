@@ -1,0 +1,56 @@
+version: "3.9"
+services:
+  server:
+    build:
+      context: ../.
+      dockerfile: docker/server/Dockerfile.dev
+    image: myapp-server
+    ports:
+      - "80:80" # Connect localhost 80 port to container 80 port
+    links: # Link services to access http://app and  http://api inside the container
+      - api:api
+  api:
+    deploy:
+      resources: # Set these values when you know what you do!
+        limits:
+          cpus: "1"
+          memory: 512M
+        reservations:
+          cpus: "1"
+          memory: 256M
+    build:
+      context: ../.
+      dockerfile: docker/api/Dockerfile.dev
+    image: myapp-api
+    environment:
+      - DB_DATABASE=myappdb
+      - DB_USERNAME=root
+      - DB_PASSWORD=example
+      - DB_HOST=dbhost
+      - DB_PORT=3306
+      - NODE_ENV=dev
+      - IS_SYNC=1
+    links:
+      - db:dbhost
+    volumes:
+      - ./../api:/usr/src/app
+    ports:
+      - "3000"
+    depends_on:
+      - "db"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3307:3306 
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: myappdb

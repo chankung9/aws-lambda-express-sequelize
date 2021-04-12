@@ -7,6 +7,7 @@ const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'dev';
 const config = require('../config/config.js')[env];
 const db = {};
+const isSync = process.env.IS_SYNC
 
 let sequelize;
 if (config.use_env_variable) {
@@ -33,5 +34,9 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+if (isSync) {
+  db.sequelize.sync()
+}
 
 module.exports = db;
